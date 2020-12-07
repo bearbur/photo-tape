@@ -1,13 +1,19 @@
-# photo-tape
-Primitive feed of photos with likes and dislikes
+# Photo Tape
 
-ToDo List:
+##Structure
 
-1. Photo-Tape
-    * read
-2. Admin Page
-    * upload
-    * edit
-    * tags
-3. Backend API
-4. Deploy project
+##1. Photo-Tape
+   #### a. main page
+      * read photo from api
+      * page navigation
+      * mobile view
+##2. Admin Page
+   #### a. photo
+      * upload
+      * edit
+      * tags
+      * text
+      * text editor
+   #### b. settings
+      * delete all
+      * hide all
