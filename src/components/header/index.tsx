@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-type HeaderProps = { title: string; navLinks: Array<{ navLink: string; name: string }> };
+type HeaderProps = { title: string; navLinks: { url: string; name: string }[] };
 
 const Header: React.FunctionComponent<HeaderProps> = ({ title, navLinks }: HeaderProps) => {
     return (
