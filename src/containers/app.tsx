@@ -22,10 +22,12 @@ const photosMock = [
     },
 ];
 
+const postsMock = [{id: 'er45', author: 'Vasya', content: 'Hello'}]
+
 type AppProps = { userName: string };
 
 const App: React.FunctionComponent<AppProps> = ({ userName }: AppProps) => {
-    return <Main userName={userName} photos={photosMock} />;
+    return <Main userName={userName} photos={photosMock} posts={postsMock} />;
 };
 
 export default App;
