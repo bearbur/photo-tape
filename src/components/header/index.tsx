@@ -1,5 +1,5 @@
 import * as React from 'react';
-
+import { Link } from 'react-router-dom';
 type HeaderProps = { title: string; navLinks: { url: string; name: string }[] };
 
 const Header: React.FunctionComponent<HeaderProps> = ({ title, navLinks }: HeaderProps) => {
@@ -8,7 +8,9 @@ const Header: React.FunctionComponent<HeaderProps> = ({ title, navLinks }: Heade
             <h1>{title}</h1>
             <nav>
                 {navLinks.map((navLink, navLinkKey) => (
-                    <div key={`navLinkKey_${navLinkKey}`}>{navLink['name']}</div>
+                    <div key={`navLinkKey_${navLinkKey}`} >
+                        <Link to={navLink.url} style={{color:'#fff'}}> {navLink.name} </Link>
+                    </div>
                 ))}
             </nav>
         </header>

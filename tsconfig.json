@@ -8,5 +8,5 @@
   "include": [
     "src"
   ],
-  "compileOnSave": false
+  "compileOnSave": true
 }

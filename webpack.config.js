@@ -1,7 +1,8 @@
-module.exports = {
+/*eslint-disable*/
+module.exports/*eslint-enable*/ = {
     entry: './src/index.tsx',
     output: {
-        path: __dirname + '/public',
+        /*eslint-disable*/path: __dirname + '/public',/*eslint-enable*/
         filename: 'build/app.js',
     },
     resolve: {
@@ -9,6 +10,7 @@ module.exports = {
     },
     devServer: {
         port: 4444,
+        historyApiFallback: true,
     },
     module: {
         rules: [{ test: /\.tsx?$/, loader: 'ts-loader' }],

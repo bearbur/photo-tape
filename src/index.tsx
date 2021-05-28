@@ -1,7 +1,5 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import App from './containers/app';
+import App from './core/app';
 
-const userMock = { name: 'Albert' };
-
-ReactDOM.render(<App userName={userMock.name} />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));
