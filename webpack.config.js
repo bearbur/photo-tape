@@ -1,8 +1,9 @@
 /*eslint-disable*/
+const path = require('path');
 module.exports/*eslint-enable*/ = {
     entry: './src/index.tsx',
     output: {
-        /*eslint-disable*/path: __dirname + '/public',/*eslint-enable*/
+        /*eslint-disable*/path: path.resolve(__dirname ,'public'),/*eslint-enable*/
         filename: 'build/app.js',
     },
     resolve: {
