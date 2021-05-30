@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { all, call, takeLatest } from 'redux-saga/effects';
+import { all, call, put, takeLatest } from 'redux-saga/effects';
 import {
     UserLoginFailurePayload,
     UserLoginRequest,
@@ -11,7 +11,10 @@ import { USER_LOGIN_REQUEST } from '../../reducers/user/action-types';
 import userActions from '../../reducers/user/user-actions';
 
 const userLogin = ({ username, password }: UserLoginRequestPayload) =>
-    axios.post<UserLoginSuccessPayload | UserLoginFailurePayload>(endpoints.login, { username, password });
+    axios.post<{ data: UserLoginSuccessPayload | UserLoginFailurePayload }>(
+        endpoints.login,
+        { username, password }
+    );
 
 /*
   Worker Saga: on USER_LOGIN_REQUEST action
@@ -22,21 +25,21 @@ function* userLoginSaga(action: UserLoginRequest) {
 
         const response = yield call(() => userLogin({ username, password }));
 
-        const { authToken, error, message } = response;
+        const { authToken, error, message } = response.data;
 
         if (authToken) {
-            userActions.loginSuccess({ authToken, error });
+            yield put(userActions.loginSuccess({ authToken, error }));
             return;
         }
 
         if (error && message) {
-            userActions.loginFailure({ error, message });
+            yield put(userActions.loginFailure({ error, message }));
             return;
         }
 
         new Error('User login failed.');
     } catch (e) {
-        userActions.loginFailure({ error: true, message: e.toString() });
+        yield put(userActions.loginFailure({ error: true, message: e.toString() }));
     }
 }
 

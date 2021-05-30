@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { NavLinksInterface } from '../../core/interfaces/pages-interfaces';
+
+/*Component props type*/
 type HeaderProps = { title: string; navLinks: NavLinksInterface[] };
 
 const Header: React.FunctionComponent<HeaderProps> = ({ title, navLinks }: HeaderProps) => {

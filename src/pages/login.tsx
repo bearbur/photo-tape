@@ -1,17 +1,12 @@
 import * as React from 'react';
+import LoginForm from '../components/forms/login-form';
 
 const Login: React.FunctionComponent = () => {
-
-    return(
+    return (
         <main>
-
-            <b>Login form will be here</b>
-
+            <LoginForm />
         </main>
-    )
-
-    }
-
-
+    );
+};
 
 export default Login;

@@ -35,7 +35,7 @@ const profileFailure = (payload: FetchUserProfileFailurePayload): FetchUserProfi
     payload,
 });
 
-const loginRequest = (payload: UserLoginRequestPayload): UserLoginRequest => ({
+    const loginRequest = (payload: UserLoginRequestPayload): UserLoginRequest => ({
     type: USER_LOGIN_REQUEST,
     payload
 });

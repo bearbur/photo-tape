@@ -1,4 +1,4 @@
-const API_HOST = 'localhost';
+const API_HOST = 'http://localhost';
 const API_PORT = '80';
 const API_PREFIX = 'photo_tape_api';
 
