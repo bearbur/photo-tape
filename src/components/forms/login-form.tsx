@@ -42,9 +42,19 @@ const LoginForm: React.FunctionComponent = () => {
                 width: '100%',
             }}
         >
-            {
-                token && <b>You already login, pal!</b>
-            }
+            {token && (
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        width: '100%',
+                    }}
+                >
+                    <b>You already login, pal!</b>
+                </div>
+            )}
             {!token && (
                 <div
                     style={{

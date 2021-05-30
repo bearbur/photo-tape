@@ -15,7 +15,7 @@ export interface UserAuthToken {
     token: AuthToken | null;
 }
 
-export interface UserProfile {
+export interface UserProfileInterface {
     username: string;
     id: string;
     creation_date: string;
@@ -26,14 +26,14 @@ export interface UserProfile {
 export interface UserState {
     pending: boolean;
     authToken: UserAuthToken | null;
-    user: UserProfile | null;
+    user: UserProfileInterface | null;
     error: string | null;
 }
 
 /* Payload interfaces */
 
 export interface FetchUserProfileSuccessPayload {
-    data: UserProfile;
+    data: UserProfileInterface;
     error: boolean;
     message: string;
 }

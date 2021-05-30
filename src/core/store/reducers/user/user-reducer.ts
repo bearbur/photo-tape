@@ -22,6 +22,11 @@ export default (state = initialState, action: UserActions): UserState => {
             };
 
         case FETCH_PROFILE_SUCCESS:
+
+            /*eslint-disable*/
+            console.log('action: ', action)
+            /*eslint-enable*/
+
             return {
                 ...state,
                 pending: false,
