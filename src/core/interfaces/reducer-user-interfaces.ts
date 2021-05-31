@@ -1,10 +1,14 @@
 import {
     FETCH_PROFILE_FAILURE,
     FETCH_PROFILE_REQUEST,
-    FETCH_PROFILE_SUCCESS, USER_LOGIN_EXPIRE,
+    FETCH_PROFILE_SUCCESS,
+    USER_LOGIN_EXPIRE,
     USER_LOGIN_FAILURE,
     USER_LOGIN_REQUEST,
-    USER_LOGIN_SUCCESS
+    USER_LOGIN_SUCCESS,
+    USER_LOGOUT_FAILURE,
+    USER_LOGOUT_REQUEST,
+    USER_LOGOUT_SUCCESS,
 } from '../store/reducers/user/action-types';
 
 /* User data interfaces and types */
@@ -44,8 +48,8 @@ export interface FetchUserProfileFailurePayload {
 }
 
 export interface UserLoginRequestPayload {
-    username: string,
-    password: string
+    username: string;
+    password: string;
 }
 
 export interface UserLoginSuccessPayload {
@@ -54,6 +58,16 @@ export interface UserLoginSuccessPayload {
 }
 
 export interface UserLoginFailurePayload {
+    error: boolean;
+    message: string;
+}
+
+export interface UserLogoutSuccessPayload {
+    error: boolean;
+    message: string;
+}
+
+export interface UserLogoutFailurePayload {
     error: boolean;
     message: string;
 }
@@ -78,7 +92,7 @@ export interface FetchUserProfileFailure {
 
 export interface UserLoginRequest {
     type: typeof USER_LOGIN_REQUEST;
-    payload: UserLoginRequestPayload
+    payload: UserLoginRequestPayload;
 }
 
 export interface UserLoginSuccess {
@@ -91,6 +105,24 @@ export interface UserLoginFailure {
     payload: UserLoginFailurePayload;
 }
 
+/* Logout action interfaces */
+
+export interface UserLogoutRequest {
+    type: typeof USER_LOGOUT_REQUEST;
+}
+
+export interface UserLogoutSuccess {
+    type: typeof USER_LOGOUT_SUCCESS;
+    payload: UserLogoutSuccessPayload;
+}
+
+export interface UserLogoutFailure {
+    type: typeof USER_LOGOUT_FAILURE;
+    payload: UserLogoutFailurePayload;
+}
+
+/* Expire action interfaces*/
+
 export interface UserLoginExpire {
     type: typeof USER_LOGIN_EXPIRE;
 }
@@ -102,4 +134,7 @@ export type UserActions =
     | UserLoginRequest
     | UserLoginSuccess
     | UserLoginFailure
+    | UserLogoutRequest
+    | UserLogoutSuccess
+    | UserLogoutFailure
     | UserLoginExpire;

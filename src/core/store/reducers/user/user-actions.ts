@@ -7,9 +7,15 @@ import {
     UserLoginExpire,
     UserLoginFailure,
     UserLoginFailurePayload,
-    UserLoginRequest, UserLoginRequestPayload,
+    UserLoginRequest,
+    UserLoginRequestPayload,
     UserLoginSuccess,
-    UserLoginSuccessPayload
+    UserLoginSuccessPayload,
+    UserLogoutFailure,
+    UserLogoutFailurePayload,
+    UserLogoutRequest,
+    UserLogoutSuccess,
+    UserLogoutSuccessPayload,
 } from '../../../interfaces/reducer-user-interfaces';
 import {
     FETCH_PROFILE_FAILURE,
@@ -19,6 +25,9 @@ import {
     USER_LOGIN_FAILURE,
     USER_LOGIN_REQUEST,
     USER_LOGIN_SUCCESS,
+    USER_LOGOUT_FAILURE,
+    USER_LOGOUT_REQUEST,
+    USER_LOGOUT_SUCCESS,
 } from './action-types';
 
 const profileRequest = (): FetchUserProfileRequest => ({
@@ -35,9 +44,9 @@ const profileFailure = (payload: FetchUserProfileFailurePayload): FetchUserProfi
     payload,
 });
 
-    const loginRequest = (payload: UserLoginRequestPayload): UserLoginRequest => ({
+const loginRequest = (payload: UserLoginRequestPayload): UserLoginRequest => ({
     type: USER_LOGIN_REQUEST,
-    payload
+    payload,
 });
 
 const loginSuccess = (payload: UserLoginSuccessPayload): UserLoginSuccess => ({
@@ -47,6 +56,20 @@ const loginSuccess = (payload: UserLoginSuccessPayload): UserLoginSuccess => ({
 
 const loginFailure = (payload: UserLoginFailurePayload): UserLoginFailure => ({
     type: USER_LOGIN_FAILURE,
+    payload,
+});
+
+const logoutRequest = (): UserLogoutRequest => ({
+    type: USER_LOGOUT_REQUEST,
+});
+
+const logoutSuccess = (payload: UserLogoutSuccessPayload): UserLogoutSuccess => ({
+    type: USER_LOGOUT_SUCCESS,
+    payload,
+});
+
+const logoutFailure = (payload: UserLogoutFailurePayload): UserLogoutFailure => ({
+    type: USER_LOGOUT_FAILURE,
     payload,
 });
 
@@ -62,4 +85,7 @@ export default {
     loginFailure,
     loginSuccess,
     loginExpire,
+    logoutRequest,
+    logoutSuccess,
+    logoutFailure,
 };

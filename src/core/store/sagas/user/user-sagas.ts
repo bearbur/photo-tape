@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { all, call, put, takeLatest } from 'redux-saga/effects';
+import { all, call, put, takeLatest, select } from 'redux-saga/effects';
 import {
     FetchUserProfileFailurePayload,
     FetchUserProfileSuccessPayload,
@@ -10,14 +10,20 @@ import {
     UserLoginSuccessPayload,
 } from '../../../interfaces/reducer-user-interfaces';
 import endpoints from '../../../constants/endpoints';
-import { USER_LOGIN_REQUEST, USER_LOGIN_SUCCESS } from '../../reducers/user/action-types';
+import { USER_LOGIN_REQUEST, USER_LOGIN_SUCCESS, USER_LOGOUT_REQUEST } from '../../reducers/user/action-types';
 import userActions from '../../reducers/user/user-actions';
+import { getUserSelector } from '../../selectors/user/user-selector';
 
 const userLogin = ({ username, password }: UserLoginRequestPayload) =>
     axios.post<{ data: UserLoginSuccessPayload | UserLoginFailurePayload }>(endpoints.login, { username, password });
 
 const userProfile = (authToken: string) =>
     axios.get<{ data: FetchUserProfileSuccessPayload | FetchUserProfileFailurePayload }>(endpoints.profile, {
+        headers: { Authorization: `Bearer ${authToken}` },
+    });
+
+const userLogout = (authToken: string) =>
+    axios.post<{ data: FetchUserProfileSuccessPayload | FetchUserProfileFailurePayload }>(endpoints.logout, null, {
         headers: { Authorization: `Bearer ${authToken}` },
     });
 
@@ -76,13 +82,46 @@ function* userProfileSaga(action: UserLoginSuccess) {
 }
 
 /*
+  Worker Saga: on USER_LOGOUT_REQUEST action
+*/
+function* userLogoutSaga() {
+    try {
+        const userData = yield select(getUserSelector);
+
+        const authToken = userData.token.token;
+
+        const response = yield call(() => userLogout(authToken));
+
+        const { error, message } = response.data;
+
+        if (!error && !!message) {
+            yield put(userActions.logoutSuccess(response.data));
+            return;
+        }
+
+        if (!!error && !!message) {
+            yield put(userActions.logoutFailure({ error, message }));
+            return;
+        }
+
+        new Error('User profile fetch failed.');
+    } catch (e) {
+        yield put(userActions.logoutFailure({ error: true, message: e.toString() }));
+    }
+}
+
+/*
   Starts worker saga on latest dispatched `USER_LOGIN_REQUEST` action.
   Allows concurrent increments.
 */
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 function* userSaga() {
-    yield all([takeLatest(USER_LOGIN_REQUEST, userLoginSaga), takeLatest(USER_LOGIN_SUCCESS, userProfileSaga)]);
+    yield all([
+        takeLatest(USER_LOGIN_REQUEST, userLoginSaga),
+        takeLatest(USER_LOGIN_SUCCESS, userProfileSaga),
+        takeLatest(USER_LOGOUT_REQUEST, userLogoutSaga),
+    ]);
 }
 
 export default userSaga;
