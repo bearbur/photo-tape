@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { UserProfileInterface } from '../../core/interfaces/reducer-user-interfaces';
 import { Redirect } from 'react-router-dom';
+import ChangePasswordForm from '../forms/change-password-form';
 
 type UserProfileComponentType = { profile: UserProfileInterface };
 
@@ -24,6 +25,7 @@ const UserProfile: React.FunctionComponent<UserProfileComponentType> = ({
             }}
         >
             <b>{`Hello, ${profile.username}!`}</b>
+            <ChangePasswordForm />
         </div>
     );
 };

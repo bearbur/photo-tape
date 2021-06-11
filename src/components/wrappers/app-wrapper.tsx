@@ -5,9 +5,10 @@ import Footer from '../footer';
 import * as React from 'react';
 
 const AppWrapper: React.FunctionComponent = ({ children }) => {
+
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <Header title={titleMock} navLinks={DEFAULT_NAVIGATION_LINKS}  />
+            <Header title={titleMock} navLinks={DEFAULT_NAVIGATION_LINKS} />
             {children}
             <Footer email={contactsMock.email} />
         </div>

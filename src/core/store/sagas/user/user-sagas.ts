@@ -13,6 +13,7 @@ import endpoints from '../../../constants/endpoints';
 import { USER_LOGIN_REQUEST, USER_LOGIN_SUCCESS, USER_LOGOUT_REQUEST } from '../../reducers/user/action-types';
 import userActions from '../../reducers/user/user-actions';
 import { getUserSelector } from '../../selectors/user/user-selector';
+import { saveState } from '../../../utils/session-storage';
 
 const userLogin = ({ username, password }: UserLoginRequestPayload) =>
     axios.post<{ data: UserLoginSuccessPayload | UserLoginFailurePayload }>(endpoints.login, { username, password });
@@ -45,12 +46,17 @@ function* userLoginSaga(action: UserLoginRequest) {
 
         if (!!error && !!message) {
             yield put(userActions.loginFailure({ error, message }));
+
+            saveState({authToken: ''})
+
             return;
         }
 
         new Error('User login failed.');
     } catch (e) {
         yield put(userActions.loginFailure({ error: true, message: e.toString() }));
+
+        saveState({authToken: ''})
     }
 }
 
@@ -60,6 +66,8 @@ function* userLoginSaga(action: UserLoginRequest) {
 function* userProfileSaga(action: UserLoginSuccess) {
     try {
         const { authToken } = action.payload;
+
+        saveState({authToken})
 
         const response = yield call(() => userProfile(authToken));
 
@@ -72,12 +80,17 @@ function* userProfileSaga(action: UserLoginSuccess) {
 
         if (!!error && !!message) {
             yield put(userActions.profileFailure({ error, message }));
+
+            saveState({authToken: ''})
+
             return;
         }
 
         new Error('User profile fetch failed.');
     } catch (e) {
         yield put(userActions.profileFailure({ error: true, message: e.toString() }));
+
+        saveState({authToken: ''})
     }
 }
 
@@ -96,11 +109,15 @@ function* userLogoutSaga() {
 
         if (!error && !!message) {
             yield put(userActions.logoutSuccess(response.data));
+
+            saveState({authToken: ''})
+
             return;
         }
 
         if (!!error && !!message) {
             yield put(userActions.logoutFailure({ error, message }));
+
             return;
         }
 
