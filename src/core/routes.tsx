@@ -13,21 +13,14 @@ import { useDispatch } from 'react-redux';
 import userActions from '../core/store/reducers/user/user-actions';
 
 const Routes: React.FunctionComponent = () => {
-
     const dispatch = useDispatch();
-
-    const handleProfileRequest = (token: string) => {
-        dispatch(userActions.loginSuccess({ authToken: token, error: false }));
-    };
 
     useEffect(
         () => {
             const authSession = loadState();
 
-            /*eslint-disable*/ console.log('authSession: ', authSession); /*eslint-enable*/
-
             if (!!authSession && authSession.authToken && authSession.authToken.length > 0) {
-                handleProfileRequest(authSession.authToken);
+                dispatch(userActions.loginSuccess({ authToken: authSession.authToken, error: false }));
             }
         },
         /*eslint-disable*/ [] /*eslint-enable*/
