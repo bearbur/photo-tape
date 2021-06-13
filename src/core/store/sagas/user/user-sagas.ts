@@ -8,9 +8,18 @@ import {
     UserLoginRequestPayload,
     UserLoginSuccess,
     UserLoginSuccessPayload,
+    UserChangePassRequest,
+    UserChangePassSuccess,
+    UserChangePassFailure,
+    UserChangePassRequestAuthPayload,
 } from '../../../interfaces/reducer-user-interfaces';
 import endpoints from '../../../constants/endpoints';
-import { USER_LOGIN_REQUEST, USER_LOGIN_SUCCESS, USER_LOGOUT_REQUEST } from '../../reducers/user/action-types';
+import {
+    USER_CHANGE_PASS_REQUEST,
+    USER_LOGIN_REQUEST,
+    USER_LOGIN_SUCCESS,
+    USER_LOGOUT_REQUEST,
+} from '../../reducers/user/action-types';
 import userActions from '../../reducers/user/user-actions';
 import { getUserSelector } from '../../selectors/user/user-selector';
 import { saveState } from '../../../utils/session-storage';
@@ -27,6 +36,15 @@ const userLogout = (authToken: string) =>
     axios.post<{ data: FetchUserProfileSuccessPayload | FetchUserProfileFailurePayload }>(endpoints.logout, null, {
         headers: { Authorization: `Bearer ${authToken}` },
     });
+
+const userChangePassword = ({ username, password, authToken }: UserChangePassRequestAuthPayload) =>
+    axios.put<{ data: UserChangePassSuccess | UserChangePassFailure }>(
+        endpoints.changePass,
+        { username, password },
+        {
+            headers: { Authorization: `Bearer ${authToken}` },
+        }
+    );
 
 /*
   Worker Saga: on USER_LOGIN_REQUEST action
@@ -47,7 +65,7 @@ function* userLoginSaga(action: UserLoginRequest) {
         if (!!error && !!message) {
             yield put(userActions.loginFailure({ error, message }));
 
-            saveState({authToken: ''})
+            saveState({ authToken: '' });
 
             return;
         }
@@ -56,7 +74,7 @@ function* userLoginSaga(action: UserLoginRequest) {
     } catch (e) {
         yield put(userActions.loginFailure({ error: true, message: e.toString() }));
 
-        saveState({authToken: ''})
+        saveState({ authToken: '' });
     }
 }
 
@@ -67,7 +85,7 @@ function* userProfileSaga(action: UserLoginSuccess) {
     try {
         const { authToken } = action.payload;
 
-        saveState({authToken})
+        saveState({ authToken });
 
         const response = yield call(() => userProfile(authToken));
 
@@ -81,7 +99,7 @@ function* userProfileSaga(action: UserLoginSuccess) {
         if (!!error && !!message) {
             yield put(userActions.profileFailure({ error, message }));
 
-            saveState({authToken: ''})
+            saveState({ authToken: '' });
 
             return;
         }
@@ -90,7 +108,7 @@ function* userProfileSaga(action: UserLoginSuccess) {
     } catch (e) {
         yield put(userActions.profileFailure({ error: true, message: e.toString() }));
 
-        saveState({authToken: ''})
+        saveState({ authToken: '' });
     }
 }
 
@@ -110,7 +128,7 @@ function* userLogoutSaga() {
         if (!error && !!message) {
             yield put(userActions.logoutSuccess(response.data));
 
-            saveState({authToken: ''})
+            saveState({ authToken: '' });
 
             return;
         }
@@ -121,9 +139,37 @@ function* userLogoutSaga() {
             return;
         }
 
-        new Error('User profile fetch failed.');
+        new Error('User logout failed.');
     } catch (e) {
         yield put(userActions.logoutFailure({ error: true, message: e.toString() }));
+    }
+}
+
+function* userChangePassSaga(action: UserChangePassRequest) {
+    try {
+        const { username, password } = action.payload;
+        const userData = yield select(getUserSelector);
+        const authToken = userData.token.token;
+
+        const response = yield call(() => userChangePassword({ username, password, authToken }));
+
+        const { error, message } = response.data;
+
+        if (!error && !!message) {
+            yield put(userActions.changePassSuccess(response.data));
+
+            return;
+        }
+
+        if (!!error && !!message) {
+            yield put(userActions.changePassFailure({ error, message }));
+
+            return;
+        }
+
+        new Error('User change password request failed.');
+    } catch (e) {
+        yield put(userActions.changePassFailure({ error: true, message: e.toString() }));
     }
 }
 
@@ -138,6 +184,7 @@ function* userSaga() {
         takeLatest(USER_LOGIN_REQUEST, userLoginSaga),
         takeLatest(USER_LOGIN_SUCCESS, userProfileSaga),
         takeLatest(USER_LOGOUT_REQUEST, userLogoutSaga),
+        takeLatest(USER_CHANGE_PASS_REQUEST, userChangePassSaga),
     ]);
 }
 

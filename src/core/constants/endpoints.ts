@@ -9,15 +9,18 @@ const userPrefix = (partUrl: string) => `user/${partUrl}`;
 const LOGIN = 'login';
 const PROFILE = 'profile';
 const LOGOUT = 'logout';
+const CHANGE_PASS = 'change/password';
 
 const USER_LOGIN = combineBaseUrl(userPrefix(LOGIN));
 const USER_LOGOUT = combineBaseUrl(userPrefix(LOGOUT));
 const USER_PROFILE = combineBaseUrl(userPrefix(PROFILE));
+const USER_CHANGE_PASS = combineBaseUrl(userPrefix(CHANGE_PASS));
 
  const endpoints : {[key: string]: string} = {
      login: USER_LOGIN,
      logout: USER_LOGOUT,
-     profile: USER_PROFILE
+     profile: USER_PROFILE,
+     changePass: USER_CHANGE_PASS
 }
 
 export default endpoints;

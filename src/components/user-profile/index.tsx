@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import { UserProfileInterface } from '../../core/interfaces/reducer-user-interfaces';
 import { Redirect } from 'react-router-dom';
 import ChangePasswordForm from '../forms/change-password-form';
@@ -10,6 +11,12 @@ const UserProfile: React.FunctionComponent<UserProfileComponentType> = ({
 }: {
     profile: UserProfileInterface;
 }) => {
+    const [showChangePass, setVisibilityChangePass] = useState(false);
+
+    const handleSwitchChangePass = () => {
+        setVisibilityChangePass(!showChangePass);
+    };
+
     if (!profile) {
         return <Redirect to={'/login'} />;
     }
@@ -25,7 +32,8 @@ const UserProfile: React.FunctionComponent<UserProfileComponentType> = ({
             }}
         >
             <b>{`Hello, ${profile.username}!`}</b>
-            <ChangePasswordForm />
+            <button onClick={handleSwitchChangePass}>{showChangePass ? 'cancel' : 'change pass ?'}</button>
+            {showChangePass && <ChangePasswordForm />}
         </div>
     );
 };

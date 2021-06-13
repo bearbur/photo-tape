@@ -3,7 +3,11 @@ import {
     FetchUserProfileFailurePayload,
     FetchUserProfileRequest,
     FetchUserProfileSuccess,
-    FetchUserProfileSuccessPayload,
+    FetchUserProfileSuccessPayload, UserChangePassFailure, UserChangePassFailurePayload,
+    UserChangePassRequest,
+    UserChangePassRequestPayload,
+    UserChangePassSuccess,
+    UserChangePassSuccessPayload,
     UserLoginExpire,
     UserLoginFailure,
     UserLoginFailurePayload,
@@ -15,19 +19,19 @@ import {
     UserLogoutFailurePayload,
     UserLogoutRequest,
     UserLogoutSuccess,
-    UserLogoutSuccessPayload,
+    UserLogoutSuccessPayload
 } from '../../../interfaces/reducer-user-interfaces';
 import {
     FETCH_PROFILE_FAILURE,
     FETCH_PROFILE_REQUEST,
-    FETCH_PROFILE_SUCCESS,
+    FETCH_PROFILE_SUCCESS, USER_CHANGE_PASS_FAILURE, USER_CHANGE_PASS_REQUEST, USER_CHANGE_PASS_SUCCESS,
     USER_LOGIN_EXPIRE,
     USER_LOGIN_FAILURE,
     USER_LOGIN_REQUEST,
     USER_LOGIN_SUCCESS,
     USER_LOGOUT_FAILURE,
     USER_LOGOUT_REQUEST,
-    USER_LOGOUT_SUCCESS,
+    USER_LOGOUT_SUCCESS
 } from './action-types';
 
 const profileRequest = (): FetchUserProfileRequest => ({
@@ -77,6 +81,23 @@ const loginExpire = (): UserLoginExpire => ({
     type: USER_LOGIN_EXPIRE,
 });
 
+const changePassRequest = (payload: UserChangePassRequestPayload): UserChangePassRequest => ({
+    type: USER_CHANGE_PASS_REQUEST,
+    payload
+});
+
+    const changePassSuccess = (payload: UserChangePassSuccessPayload): UserChangePassSuccess => ({
+    type: USER_CHANGE_PASS_SUCCESS,
+    payload,
+});
+
+const changePassFailure = (payload: UserChangePassFailurePayload): UserChangePassFailure => ({
+    type: USER_CHANGE_PASS_FAILURE,
+    payload,
+});
+
+
+
 export default {
     profileRequest,
     profileSuccess,
@@ -88,4 +109,7 @@ export default {
     logoutRequest,
     logoutSuccess,
     logoutFailure,
+    changePassRequest,
+    changePassSuccess,
+    changePassFailure
 };

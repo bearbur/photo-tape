@@ -2,6 +2,9 @@ import {
     FETCH_PROFILE_FAILURE,
     FETCH_PROFILE_REQUEST,
     FETCH_PROFILE_SUCCESS,
+    USER_CHANGE_PASS_FAILURE,
+    USER_CHANGE_PASS_REQUEST,
+    USER_CHANGE_PASS_SUCCESS,
     USER_LOGIN_EXPIRE,
     USER_LOGIN_FAILURE,
     USER_LOGIN_REQUEST,
@@ -72,6 +75,27 @@ export interface UserLogoutFailurePayload {
     message: string;
 }
 
+export interface UserChangePassRequestPayload {
+    username: string;
+    password: string;
+}
+
+export interface UserChangePassRequestAuthPayload {
+    username: string;
+    password: string;
+    authToken: string
+}
+
+export interface UserChangePassSuccessPayload {
+    error: boolean;
+    message: string;
+}
+
+export interface UserChangePassFailurePayload {
+    error: boolean;
+    message: string;
+}
+
 /* Fetch user profile interfaces */
 
 export interface FetchUserProfileRequest {
@@ -127,6 +151,23 @@ export interface UserLoginExpire {
     type: typeof USER_LOGIN_EXPIRE;
 }
 
+/* User change pass interfaces */
+
+export interface UserChangePassRequest {
+    type: typeof USER_CHANGE_PASS_REQUEST;
+    payload: UserChangePassRequestPayload;
+}
+
+export interface UserChangePassSuccess {
+    type: typeof USER_CHANGE_PASS_SUCCESS;
+    payload: UserChangePassSuccessPayload;
+}
+
+export interface UserChangePassFailure {
+    type: typeof USER_CHANGE_PASS_FAILURE;
+    payload: UserChangePassFailurePayload;
+}
+
 export type UserActions =
     | FetchUserProfileRequest
     | FetchUserProfileSuccess
@@ -137,4 +178,7 @@ export type UserActions =
     | UserLogoutRequest
     | UserLogoutSuccess
     | UserLogoutFailure
-    | UserLoginExpire;
+    | UserLoginExpire
+    | UserChangePassRequest
+    | UserChangePassSuccess
+    | UserChangePassFailure;

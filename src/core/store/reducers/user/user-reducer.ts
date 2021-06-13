@@ -3,6 +3,9 @@ import {
     FETCH_PROFILE_FAILURE,
     FETCH_PROFILE_REQUEST,
     FETCH_PROFILE_SUCCESS,
+    USER_CHANGE_PASS_FAILURE,
+    USER_CHANGE_PASS_REQUEST,
+    USER_CHANGE_PASS_SUCCESS,
     USER_LOGIN_EXPIRE,
     USER_LOGIN_FAILURE,
     USER_LOGIN_REQUEST,
@@ -25,14 +28,14 @@ export default (state = initialState, action: UserActions): UserState => {
             return {
                 ...state,
                 pending: true,
+                error: initialState.error,
             };
 
         case FETCH_PROFILE_SUCCESS:
             return {
                 ...state,
                 pending: false,
-                user: action.payload.data,
-                error: null,
+                user: action.payload.data
             };
 
         case FETCH_PROFILE_FAILURE:
@@ -46,6 +49,7 @@ export default (state = initialState, action: UserActions): UserState => {
             return {
                 ...state,
                 pending: true,
+                error: initialState.error,
             };
         }
 
@@ -71,6 +75,7 @@ export default (state = initialState, action: UserActions): UserState => {
             return {
                 ...state,
                 pending: true,
+                error: initialState.error,
             };
         }
 
@@ -93,8 +98,29 @@ export default (state = initialState, action: UserActions): UserState => {
 
         case USER_LOGIN_EXPIRE: {
             return {
+                ...initialState,
+            };
+        }
+
+        case USER_CHANGE_PASS_REQUEST: {
+            return {
                 ...state,
-                authToken: initialState.authToken,
+                pending: true,
+                error: initialState.error,
+            };
+        }
+
+        case USER_CHANGE_PASS_SUCCESS: {
+            return {
+                ...state,
+                pending: false,
+            };
+        }
+
+        case USER_CHANGE_PASS_FAILURE: {
+            return {
+                ...state,
+                error: action.payload.message,
             };
         }
 
