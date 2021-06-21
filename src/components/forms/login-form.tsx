@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import userActions from '../../core/store/reducers/user/user-actions';
 import { getUserSelector } from '../../core/store/selectors/user/user-selector';
+import { NavLink } from 'react-router-dom';
 
 type LoginStateType = { login: string; password: string; processing: boolean; error: boolean };
 
@@ -53,6 +54,9 @@ const LoginForm: React.FunctionComponent = () => {
                     }}
                 >
                     <b>You already login, pal!</b>
+                    <div style={{ padding: '10px', fontSize: '1.2rem' }}>
+                        <NavLink to={'/'}>On start page</NavLink>
+                    </div>
                 </div>
             )}
             {!token && (

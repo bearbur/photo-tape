@@ -55,6 +55,8 @@ function* userLoginSaga(action: UserLoginRequest) {
 
         const response = yield call(() => userLogin({ username, password }));
 
+        /* todo use expiration and save at store. on open start page at wrapper - check current time and expiration time, use reauth api method and update token if time limit is near */
+
         const { authToken, error, message } = response.data;
 
         if (authToken) {
